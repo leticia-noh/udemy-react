@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import UserInput from "./components/UserInput.jsx";
+import Results from "./components/Results.jsx";
 
 function App() {
   const [userInput, setUserInput] = useState({
@@ -14,15 +15,17 @@ function App() {
     setUserInput((prevUserInput) => {
       return {
         ...prevUserInput,
-        [inputIdentifier]: newValue
+        [inputIdentifier]: +newValue
       };
     });
   }
 
+  const inputIsValid = userInput.duration >= 1;
+
   return (
     <>
       <UserInput onChange={handleChange} userInput={userInput} />
-      <Results input={userInput} />
+      {inputIsValid ? <Results input={userInput} /> : <p className="center">Please enter a duration greater than zero.</p>}
     </>
   );
 }
