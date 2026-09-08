@@ -1,34 +1,45 @@
 import { useActionState } from "react";
 
-function postOpinionAction(prevState, formData) {
-  const userName = formData.get("userName");
-  const title = formData.get("title");
-  const body = formData.get("body");
-
-  let errors = [];
-
-  if (!userName.trim()) {
-    errors.push('Invalid username.')
-  }
-
-  if (title.trim() === "") {
-    errors.push("You must provide a title.");
-  }
-
-  if (body.trim().length < 10 || body.trim().length > 500) {
-    errors.push("Opinion must be between 10 and 500 characters long.");
-  }
-
-  if (errors.length > 0) {
-    return { errors, enteredValues: {
-      userName, title, body
-    } };
-  }
-
-  return { errors: null };
-}
+import { OpinionsContext } from "../store/opinions-context";
+import { use } from "react";
 
 export function NewOpinion() {
+  const { addOpinion } = use(OpinionsContext);
+  
+  async function postOpinionAction(prevState, formData) {
+    const userName = formData.get("userName");
+    const title = formData.get("title");
+    const body = formData.get("body");
+
+    let errors = [];
+
+    if (!userName.trim()) {
+      errors.push("Invalid username.");
+    }
+
+    if (title.trim() === "") {
+      errors.push("You must provide a title.");
+    }
+
+    if (body.trim().length < 10 || body.trim().length > 500) {
+      errors.push("Opinion must be between 10 and 500 characters long.");
+    }
+
+    if (errors.length > 0) {
+      return {
+        errors,
+        enteredValues: {
+          userName,
+          title,
+          body,
+        },
+      };
+    }
+
+    await addOpinion({ title, body, userName });
+    return { errors: null };
+  }
+  
   const [formState, formAction] = useActionState(postOpinionAction, {
     errors: null,
   });
