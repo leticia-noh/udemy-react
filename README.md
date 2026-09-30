@@ -1,5 +1,5 @@
 <h1>
-  Curso React - The Complete Guide (incl. Next.js, Redux)
+  Curso React - The Complete Guide
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="30" height="30">
 </h1>
 
